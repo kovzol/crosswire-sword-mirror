@@ -107,18 +107,30 @@ AM_MAINTAINER_MODE
 if test x$enable_debug = xyes; then
   GCJFLAGS="-g -O0"
   if test x$ac_cv_prog_cc_g = xyes; then
-    AM_CFLAGS="-g3 -O0 -Wall -Werror"
+    AM_CFLAGS="-g3 -O0 -Wall"
   else
-    AM_CFLAGS="-O0 -Wall -Werror"
+    AM_CFLAGS="-O0 -Wall"
   fi
   if test x$ac_cv_prog_cxx_g = xyes; then
-    AM_CXXFLAGS="-g3 -O0 -Wall -Werror -Woverloaded-virtual"
+    AM_CXXFLAGS="-g3 -O0 -Wall -Woverloaded-virtual"
   else
-    AM_CXXFLAGS="-O0 -Wall -Werror -Woverloaded-virtual"
+    AM_CXXFLAGS="-O0 -Wall -Woverloaded-virtual"
   fi
 else
-  AM_CFLAGS="-Ofast"
-  AM_CXXFLAGS="-Ofast"
+  my_save_cxxflags="$CXXFLAGS"
+  CXXFLAGS=-Ofast
+  AC_MSG_CHECKING([whether CXX supports -Ofast])
+  AC_LANG_PUSH([C++])
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])],
+      [AC_MSG_RESULT([yes])]
+      [AM_CFLAGS=-Ofast]
+      [AM_CXXFLAGS=-Ofast],
+      [AC_MSG_RESULT([no])]
+      [AM_CFLAGS=-O3]
+      [AM_CXXFLAGS=-O3],
+  )
+  CXXFLAGS="$my_save_cxxflags"
+  AC_LANG_POP([C++])
 fi
 
 AM_CFLAGS="$AM_CFLAGS -fPIC"
