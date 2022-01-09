@@ -187,6 +187,10 @@ ELSE(MSVC)
 	SET(CMAKE_CXX_FLAGS_RELEASE        "-O3 ${CMAKE_CXX_FLAGS}")
 	SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g ${CMAKE_CXX_FLAGS}")
 ENDIF(MSVC)
+
+IF(EMSCRIPTEN)
+	SET(CMAKE_C_FLAGS "-Wno-error=implicit-function-declaration ${CMAKE_C_FLAGS}")
+ENDIF(EMSCRIPTEN)
 ##############################################################################################
 # Setting libraries and includes
 #
